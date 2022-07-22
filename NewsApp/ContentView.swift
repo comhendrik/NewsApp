@@ -8,9 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var acaller = APICaller()
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView {
+            List {
+                ForEach(acaller.articles) { article in
+                    Text(article.title ?? "no title")
+                }
+            }
+        }
+        .task {
+            await acaller.fetchArticles()
+            print(acaller.articles)
+        }
     }
 }
 
