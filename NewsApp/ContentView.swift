@@ -8,41 +8,51 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var acaller = APICaller()
-    let categories: [Category] = [.business,.entertainment,.general,.health,.science,.sports,.technology]
+    @EnvironmentObject private var apicaller: APICaller
+    let categorys: [Category] = [.general,.business,.entertainment,.health,.science,.sports,.technology]
+    @AppStorage("categorys") var usedCategorys = CategoryArray()
+    @State private var showCategoryChangingView = false
     var body: some View {
         NavigationView {
             VStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(categories) { category in
-                            VStack {
-                                Button {
-                                    withAnimation() {
-                                        acaller.currentCategory = category
+                        ForEach(categorys) { category in
+                            if usedCategorys.contains(category) {
+                                VStack {
+                                    Button {
+                                        withAnimation() {
+                                            apicaller.currentCategory = category
+                                        }
+                                        Task {
+                                            
+                                            //TODO: find way to only call fetching once after launching app
+                                            
+                                           // await acaller.fetchArticles(category: category.queryValue, country: acaller.countryForFetching)
+                                        }
+                                    } label: {
+                                        Text(category.stringValue)
+                                            .foregroundColor(apicaller.currentCategory == category ? .black : .gray)
+                                            .fontWeight(apicaller.currentCategory == category ? .heavy : .light)
                                     }
-                                    Task {
-                                        
-                                        //TODO: find way to only call fetching once after launching app
-                                        
-                                       // await acaller.fetchArticles(category: category.queryValue, country: acaller.countryForFetching)
+                                    .padding(.horizontal, apicaller.currentCategory == category ? 10 : 5)
+                                    if apicaller.currentCategory == category {
+                                        CustomDivider(color: .black, width: 3, cornerRadius: 15)
                                     }
-                                } label: {
-                                    Text(category.stringValue)
-                                        .foregroundColor(acaller.currentCategory == category ? .black : .gray)
-                                        .fontWeight(acaller.currentCategory == category ? .heavy : .light)
-                                }
-                                .padding(.horizontal, acaller.currentCategory == category ? 10 : 5)
-                                if acaller.currentCategory == category {
-                                    CustomDivider(color: .black, width: 3, cornerRadius: 15)
                                 }
                             }
 
                         }
+                        Button(action: {
+                            showCategoryChangingView.toggle()
+                        }, label: {
+                            Image(systemName: "plus")
+                                .foregroundColor(.black)
+                        })
                     }
                 }
                 .padding(.horizontal)
-                ArticleList(articles: acaller.articles)
+                ArticleList(articles: apicaller.articles)
                 
                 
             }
@@ -53,6 +63,9 @@ struct ContentView: View {
                         .fontWeight(.bold)
                         .padding([.horizontal, .top])
                 })
+            }
+            .fullScreenCover(isPresented: $showCategoryChangingView) {
+                CategoryView(categorys: categorys, showCategoryChangingView: $showCategoryChangingView)
             }
         }
     }

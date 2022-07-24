@@ -8,6 +8,8 @@
 
 //The data is fetched from the news api (https://newsapi.org) and I use the top business headlines in Germany.
 
+
+//TODO: Neue Dateien für struct, enum
 import Foundation
 import SwiftUI
 
@@ -44,11 +46,11 @@ struct APIResponse: Codable {
     let status: String
 }
 
-//TODO: Case for all news
-enum Category {
+
+enum Category: Codable {
+    case general
     case business
     case entertainment
-    case general
     case health
     case science
     case sports
@@ -56,12 +58,12 @@ enum Category {
     
     var stringValue: String {
         switch self {
+        case .general:
+            return "General"
         case .business:
             return "Business"
         case .entertainment:
             return "Entertainment"
-        case .general:
-            return "General"
         case .health:
             return "Health"
         case .science:
@@ -75,12 +77,12 @@ enum Category {
     
     var queryValue: String {
         switch self {
+        case .general:
+            return "general"
         case .business:
             return "business"
         case .entertainment:
             return "entertainment"
-        case .general:
-            return "general"
         case .health:
             return "health"
         case .science:
@@ -91,6 +93,25 @@ enum Category {
             return "technology"
         }
     }
+    
+    var emojiValue: String {
+        switch self {
+        case .general:
+            return "📰"
+        case .business:
+            return "📊"
+        case .entertainment:
+            return "🎮"
+        case .health:
+            return "💊"
+        case .science:
+            return "🧬"
+        case .sports:
+            return "💪"
+        case .technology:
+            return "💻"
+        }
+    }
 }
 
 extension Category: Identifiable {
@@ -98,25 +119,53 @@ extension Category: Identifiable {
 }
 
 
+//[Category] needs to be saved in @AppStorage to make it possible to save the users decision which categorys he wants te see
+typealias CategoryArray = [Category]
 
-@MainActor
+extension CategoryArray: RawRepresentable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+            let result = try? JSONDecoder().decode([Category].self, from: data)
+        else {
+            return nil
+        }
+        self = result
+    }
+
+    public var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else {
+            return "[]"
+        }
+        
+        return result
+    }
+}
+
 class APICaller: ObservableObject {
     @Published var articles = [Article]()
-    @Published var currentCategory: Category = .business
+    @Published var currentCategory: Category = .general
     
     let countryForFetching = "de"
     let apiKey = "Key"
     
+    @AppStorage("categorys") var usedCategorys = CategoryArray()
+    
     init() {
         Task {
+            
+            if !usedCategorys.contains(.general) {
+                usedCategorys.append(.general)
+            }
             //fetch articles for first category automatically because otherwise there wouldn't be articles after launching the app
-            await fetchArticles(category: currentCategory.queryValue, country: countryForFetching)
-            print("Start")
+            //await fetchArticles(category: currentCategory.queryValue, country: countryForFetching)
             
             //test objects because you don't want to query all the times while development
-//            for i in 0 ..< 10 {
-//                fetchArticlesForTesting(idNumber: i)
-//            }
+            for i in 0 ..< 10 {
+                fetchArticlesForTesting(idNumber: i)
+            }
+            
         }
     }
     
@@ -150,7 +199,9 @@ class APICaller: ObservableObject {
             let (data, _) = try await URLSession.shared.data(from: urlForFetching)
             let decoder = JSONDecoder()
             let decodedData = try decoder.decode(APIResponse.self, from: data)
-            articles = decodedData.articles
+            Task { @MainActor in
+                articles = decodedData.articles
+            }
         } catch {
             print(error)
         }

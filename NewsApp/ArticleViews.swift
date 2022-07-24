@@ -36,6 +36,7 @@ struct ArticleDetailView: View {
                     Text(article.title ?? "No title")
                         .fontWeight(.bold)
                         .foregroundColor(.white)
+                        .fixedSize(horizontal: false, vertical: true)
                         
                     HStack {
                         Text("published by \(article.source.name ?? "unknown")")

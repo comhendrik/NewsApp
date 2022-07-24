@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct NewsAppApp: App {
+    
+    let apicaller = APICaller()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(apicaller)
         }
     }
 }
