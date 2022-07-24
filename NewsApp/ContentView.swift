@@ -41,7 +41,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .padding()
+                .padding(.horizontal)
                 ArticleList(articles: acaller.articles)
                 
                 
@@ -49,9 +49,9 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading, content: {
                     Text("News")
-                        .fontWeight(.bold)
                         .font(.largeTitle)
-                        .padding()
+                        .fontWeight(.bold)
+                        .padding([.horizontal, .top])
                 })
             }
         }

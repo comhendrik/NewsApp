@@ -25,13 +25,14 @@ struct ArticleImageView: View {
     var url: String
     var divideScreenWidthBy: CGFloat = 0
     var cornerRadius: CGFloat = 0
+    var divideScreenHeightBy: CGFloat = 0
     var body: some View {
         AsyncImage(url: URL(string: url)) { phase in
             switch phase {
             case .empty:
                 ZStack {
                     Rectangle()
-                        .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy)
+                        .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy, height: UIScreen.main.bounds.height / divideScreenHeightBy)
                         .cornerRadius(cornerRadius)
                         .foregroundColor(.gray.opacity(0.75))
                     ProgressView()
@@ -44,7 +45,7 @@ struct ArticleImageView: View {
             case .failure:
                     ZStack {
                         Rectangle()
-                            .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy)
+                            .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy, height: UIScreen.main.bounds.height / divideScreenHeightBy)
                             .cornerRadius(cornerRadius)
                             .foregroundColor(.gray.opacity(0.75))
                         Image(systemName: "photo.on.rectangle.angled")
@@ -53,7 +54,7 @@ struct ArticleImageView: View {
             default:
                 ZStack {
                     Rectangle()
-                        .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy)
+                        .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy, height: UIScreen.main.bounds.height / divideScreenHeightBy)
                         .cornerRadius(cornerRadius)
                         .foregroundColor(.gray.opacity(0.75))
                     Image(systemName: "photo.on.rectangle.angled")

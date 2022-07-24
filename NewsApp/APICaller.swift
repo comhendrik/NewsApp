@@ -110,13 +110,13 @@ class APICaller: ObservableObject {
     init() {
         Task {
             //fetch articles for first category automatically because otherwise there wouldn't be articles after launching the app
-           // await fetchArticles(category: currentCategory.queryValue, country: countryForFetching)
-            
+            await fetchArticles(category: currentCategory.queryValue, country: countryForFetching)
+            print("Start")
             
             //test objects because you don't want to query all the times while development
-            for i in 0 ..< 10 {
-                fetchArticlesForTesting(idNumber: i)
-            }
+//            for i in 0 ..< 10 {
+//                fetchArticlesForTesting(idNumber: i)
+//            }
         }
     }
     
@@ -162,4 +162,3 @@ class APICaller: ObservableObject {
         articles.append(Article(source: Source(id: nil, name: "Investor's Business Daily"), author: "Investor's Business Daily", title: "Market Rally Faces Earnings Wave, Big Fed Rate Hike; What To Do - Investor's Business Daily", description: "Several stocks flashing buy signals have had quick sell-offs, forcing tough decisions.", id: "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-apple-earnings-fed-rate-hike-headline-huge-market-week-what-to-do-now/\(idNumber)", urlToImage: "https://www.investors.com/wp-content/uploads/2020/04/Stock-BigWavePipe-08-adobe.jpg", publishedAt: "2022-07-22T22:41:00Z", content: "Dow Jones futures will open on Sunday evening, along with S&amp;P 500 futures and Nasdaq futures. The stock market rally had strong gains last week, breaking above some key resistance. Techs pulled b… [+7977 chars]"))
     }
 }
-
