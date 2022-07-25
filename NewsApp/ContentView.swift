@@ -16,14 +16,21 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 SearchView { searchPhrase in
-                    Task {
+                    Task { @MainActor in
+                        //fetching articles from search phrase
                         apicaller.currentCategory = .search
-                        await apicaller.fetchArticlesBySearchPhrase(searchPhrase: searchPhrase)
+                        
+                        
+                        //real search function wont be called because i dont want to query all the time when testing ui changes
+                        //await apicaller.fetchArticlesBySearchPhrase(searchPhrase: searchPhrase)
                     }
                 } closeFunction: {
-                    Task {
+                    Task { @MainActor in
+                        //fetching new articles when closing search view when there are no articles
                         apicaller.currentCategory = .general
-                        await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue, country: apicaller.countryForFetching)
+                        if apicaller.articles[apicaller.currentCategory.arrayIndex].count == 0 {
+                            apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue, country: apicaller.countryForFetching)
+                        }
                     }
                 }
 
@@ -34,14 +41,16 @@ struct ContentView: View {
                                 if usedCategorys.contains(category) {
                                     VStack {
                                         Button {
-                                            withAnimation() {
-                                                apicaller.currentCategory = category
-                                            }
-                                            Task {
+                                            //changing category and fetching articles when there are no articles for this category
+                                            Task { @MainActor in
+                                                withAnimation() {
+                                                    apicaller.currentCategory = category
+                                                }
                                                 
-                                                //TODO: find way to only call fetching once after launching app
-                                                
-                                               // await acaller.fetchArticles(category: category.queryValue, country: acaller.countryForFetching)
+                                                if apicaller.articles[apicaller.currentCategory.arrayIndex].count == 0 {
+                                                    apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue, country: apicaller.countryForFetching)
+                                                }
+                                                print(apicaller.articles[0])
                                             }
                                         } label: {
                                             Text("\(category.emojiValue ) \(category.stringValue)")
@@ -66,14 +75,35 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                 } else {
-                    HStack {
-                        Text("\(apicaller.currentCategory.emojiValue) \(apicaller.currentCategory.stringValue)")
-                            .fontWeight(.bold)
-                        Spacer()
+                    VStack {
+                        HStack {
+                            Text("\(apicaller.currentCategory.emojiValue) \(apicaller.currentCategory.stringValue)")
+                                .fontWeight(.bold)
+                            Spacer()
+                        }
+                        .padding(.horizontal)
+                        
                     }
-                    .padding(.horizontal)
                 }
-                ArticleList(articles: apicaller.articles)
+                //TODO: do not repeat code
+                switch apicaller.currentCategory {
+                case .search:
+                    ArticleList(articles: apicaller.articles[0])
+                case .general:
+                    ArticleList(articles: apicaller.articles[1])
+                case .business:
+                    ArticleList(articles: apicaller.articles[2])
+                case .entertainment:
+                    ArticleList(articles: apicaller.articles[3])
+                case .health:
+                    ArticleList(articles: apicaller.articles[4])
+                case .science:
+                    ArticleList(articles: apicaller.articles[5])
+                case .sports:
+                    ArticleList(articles: apicaller.articles[6])
+                case .technology:
+                    ArticleList(articles: apicaller.articles[7])
+                }
                 
                 
             }

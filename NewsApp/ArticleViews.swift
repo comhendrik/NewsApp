@@ -30,28 +30,6 @@ struct ArticleDetailView: View {
         
         VStack {
             ArticleImageView(url: article.urlToImage ?? "no url", divideScreenWidthBy: 0, cornerRadius: 0, divideScreenHeightBy: 3)
-            VStack {
-                
-                VStack {
-                    
-                    HStack {
-                        Text(article.title ?? "No title")
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .fixedSize(horizontal: false, vertical: true)
-                        Spacer()
-                    }
-                        
-                    HStack {
-                        Text("published by \(article.source.name ?? "unknown")")
-                            .fontWeight(.semibold)
-                            .font(.subheadline)
-                            .foregroundColor(.white.opacity(0.75))
-                        Spacer()
-                    }
-                        
-                }
-                .padding(10)
                 .background(
                   GeometryReader { geometryProxy in
                       //creating clear color to get size of vstack view
@@ -63,8 +41,29 @@ struct ArticleDetailView: View {
                     //passing size of view to variable to make it usable in programm
                     heightOfImage = newSize.height
                 }
-                
+            VStack {
                 VStack {
+                    VStack {
+                        
+                        HStack {
+                            Text(article.title ?? "No title")
+                                .fontWeight(.bold)
+                                .foregroundColor(.black)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
+                        }
+                            
+                        HStack {
+                            Text("published by \(article.source.name ?? "unknown")")
+                                .fontWeight(.semibold)
+                                .font(.subheadline)
+                                .foregroundColor(.gray.opacity(0.75))
+                            Spacer()
+                        }
+                            
+                    }
+                    .padding([.horizontal, .top])
+                    
                     HStack {
                         Text(article.author ?? "no author")
                             .padding(15)
@@ -76,7 +75,7 @@ struct ArticleDetailView: View {
                             .background(Color.gray.cornerRadius(25).opacity(0.25))
                         
                     }
-                    .padding()
+                    .padding(.horizontal)
                     
                     Text(article.description ?? "no description")
                         .fontWeight(.semibold)
@@ -92,7 +91,7 @@ struct ArticleDetailView: View {
                 }
                 .background(Color.white.frame(width: UIScreen.main.bounds.width).cornerRadius(20))
             }
-            .offset(y: -(heightOfImage * 1.5))
+            .offset(y: -heightOfImage/8)
             
             Spacer()
         }
