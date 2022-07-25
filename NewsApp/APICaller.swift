@@ -48,6 +48,7 @@ struct APIResponse: Codable {
 
 
 enum Category: Codable {
+    case search
     case general
     case business
     case entertainment
@@ -58,6 +59,8 @@ enum Category: Codable {
     
     var stringValue: String {
         switch self {
+        case .search:
+            return "Search"
         case .general:
             return "General"
         case .business:
@@ -77,6 +80,8 @@ enum Category: Codable {
     
     var queryValue: String {
         switch self {
+        case .search:
+            return "q"
         case .general:
             return "general"
         case .business:
@@ -96,6 +101,8 @@ enum Category: Codable {
     
     var emojiValue: String {
         switch self {
+        case .search:
+            return "🕵️‍♂️"
         case .general:
             return "📰"
         case .business:
@@ -148,7 +155,7 @@ class APICaller: ObservableObject {
     @Published var currentCategory: Category = .general
     
     let countryForFetching = "de"
-    let apiKey = "Key"
+    let apiKey = "key"
     
     @AppStorage("categorys") var usedCategorys = CategoryArray()
     
@@ -172,7 +179,7 @@ class APICaller: ObservableObject {
     
     //TODO: Proper error handling for full function
     //API Call for articles
-    func fetchArticles(category: String, country: String) async {
+    func fetchArticlesByCategory(category: String, country: String) async {
         
         var topHeadLinesUrl = URLComponents(string: "https://newsapi.org/v2/top-headlines?")
         
@@ -206,6 +213,39 @@ class APICaller: ObservableObject {
             print(error)
         }
         
+    }
+    
+    func fetchArticlesBySearchPhrase(searchPhrase: String) async {
+        var topHeadLinesUrl = URLComponents(string: "https://newsapi.org/v2/everything?")
+        
+        //create queryItems from passed values
+        
+        let category = URLQueryItem(name: "q", value: searchPhrase)
+        let key = URLQueryItem(name: "apiKey", value: apiKey)
+        
+        topHeadLinesUrl?.queryItems?.append(category)
+        topHeadLinesUrl?.queryItems?.append(key)
+        
+        
+        //check if url is valid
+        guard let urlForFetching = topHeadLinesUrl?.url else {
+            print("error")
+            return
+        }
+        print(urlForFetching)
+
+        //get data from api
+        do {
+            articles = []
+            let (data, _) = try await URLSession.shared.data(from: urlForFetching)
+            let decoder = JSONDecoder()
+            let decodedData = try decoder.decode(APIResponse.self, from: data)
+            Task { @MainActor in
+                articles = decodedData.articles
+            }
+        } catch {
+            print(error)
+        }
     }
     
     func fetchArticlesForTesting(idNumber: Int) {

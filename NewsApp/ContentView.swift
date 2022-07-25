@@ -15,43 +15,64 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(categorys) { category in
-                            if usedCategorys.contains(category) {
-                                VStack {
-                                    Button {
-                                        withAnimation() {
-                                            apicaller.currentCategory = category
-                                        }
-                                        Task {
-                                            
-                                            //TODO: find way to only call fetching once after launching app
-                                            
-                                           // await acaller.fetchArticles(category: category.queryValue, country: acaller.countryForFetching)
-                                        }
-                                    } label: {
-                                        Text(category.stringValue)
-                                            .foregroundColor(apicaller.currentCategory == category ? .black : .gray)
-                                            .fontWeight(apicaller.currentCategory == category ? .heavy : .light)
-                                    }
-                                    .padding(.horizontal, apicaller.currentCategory == category ? 10 : 5)
-                                    if apicaller.currentCategory == category {
-                                        CustomDivider(color: .black, width: 3, cornerRadius: 15)
-                                    }
-                                }
-                            }
-
-                        }
-                        Button(action: {
-                            showCategoryChangingView.toggle()
-                        }, label: {
-                            Image(systemName: "plus")
-                                .foregroundColor(.black)
-                        })
+                SearchView { searchPhrase in
+                    Task {
+                        apicaller.currentCategory = .search
+                        await apicaller.fetchArticlesBySearchPhrase(searchPhrase: searchPhrase)
+                    }
+                } closeFunction: {
+                    Task {
+                        apicaller.currentCategory = .general
+                        await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue, country: apicaller.countryForFetching)
                     }
                 }
-                .padding(.horizontal)
+
+                if apicaller.currentCategory != .search {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(categorys) { category in
+                                if usedCategorys.contains(category) {
+                                    VStack {
+                                        Button {
+                                            withAnimation() {
+                                                apicaller.currentCategory = category
+                                            }
+                                            Task {
+                                                
+                                                //TODO: find way to only call fetching once after launching app
+                                                
+                                               // await acaller.fetchArticles(category: category.queryValue, country: acaller.countryForFetching)
+                                            }
+                                        } label: {
+                                            Text("\(category.emojiValue ) \(category.stringValue)")
+                                                .foregroundColor(apicaller.currentCategory == category ? .black : .gray)
+                                                .fontWeight(apicaller.currentCategory == category ? .heavy : .light)
+                                        }
+                                        .padding(.horizontal, apicaller.currentCategory == category ? 10 : 5)
+                                        if apicaller.currentCategory == category {
+                                            CustomDivider(color: .black, width: 3, cornerRadius: 15)
+                                        }
+                                    }
+                                }
+
+                            }
+                            Button(action: {
+                                showCategoryChangingView.toggle()
+                            }, label: {
+                                Image(systemName: "plus")
+                                    .foregroundColor(.black)
+                            })
+                        }
+                    }
+                    .padding(.horizontal)
+                } else {
+                    HStack {
+                        Text("\(apicaller.currentCategory.emojiValue) \(apicaller.currentCategory.stringValue)")
+                            .fontWeight(.bold)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                }
                 ArticleList(articles: apicaller.articles)
                 
                 

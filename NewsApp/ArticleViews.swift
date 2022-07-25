@@ -33,10 +33,14 @@ struct ArticleDetailView: View {
             VStack {
                 
                 VStack {
-                    Text(article.title ?? "No title")
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    HStack {
+                        Text(article.title ?? "No title")
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer()
+                    }
                         
                     HStack {
                         Text("published by \(article.source.name ?? "unknown")")
@@ -83,14 +87,7 @@ struct ArticleDetailView: View {
                         .padding(.horizontal)
                         .fixedSize(horizontal: false, vertical: true)
                     
-                    Link(destination: URL(string: article.id ?? "no url") ?? URL(string: "https://google.com")!, label: {
-                        HStack {
-                            Text("continue reading")
-                                .foregroundColor(.blue)
-                                .padding(.horizontal)
-                            Spacer()
-                        }
-                    })
+                    
                         
                 }
                 .background(Color.white.frame(width: UIScreen.main.bounds.width).cornerRadius(20))
@@ -109,6 +106,13 @@ struct ArticleDetailView: View {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Image(systemName: "chevron.backward.circle.fill")
+                        .foregroundColor(.white)
+                        .font(.title2)
+                })
+            })
+            ToolbarItem(placement: .navigationBarTrailing, content: {
+                Link(destination: URL(string: article.id ?? "no url") ?? URL(string: "https://google.com")!, label: {
+                    Image(systemName: "doc.text.magnifyingglass")
                         .foregroundColor(.white)
                         .font(.title2)
                 })
