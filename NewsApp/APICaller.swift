@@ -13,6 +13,7 @@
 import Foundation
 import SwiftUI
 
+
 struct Article: Identifiable, Codable {
     var source: Source
     var author: String?
@@ -189,7 +190,7 @@ class APICaller: ObservableObject {
             //fetch articles for first category automatically because otherwise there wouldn't be articles after launching the app
             //articles[currentCategory.arrayIndex] = await fetchArticlesByCategory(category: currentCategory.queryValue, country: countryForFetching)
             
-            //test objects because you don't want to query all the times while development thats because the real function above is not called
+//            //test objects because you don't want to query all the times while development thats because the real function above is not called
             for i in 0 ..< 10 {
                 fetchArticlesForTesting(index: i)
             }

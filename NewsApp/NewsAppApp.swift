@@ -12,10 +12,14 @@ struct NewsAppApp: App {
     
     let apicaller = APICaller()
     
+    let persistenceController = PersistenceController.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(apicaller)
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(persistenceController)
         }
     }
 }

@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var searchPhrase = ""
+    @Binding var searchPhrase: String
+    @Binding var searchPerformed: Bool
+    @EnvironmentObject var controller: PersistenceController
     var searchFunction: (String) -> Void
-    @State private var searchPerformed = false
+    
     var closeFunction: () -> Void
     var body: some View {
         HStack {
@@ -19,17 +21,23 @@ struct SearchView: View {
             TextField("Search…", text: $searchPhrase)
             Button {
                 withAnimation() {
+                    //performing search
                     searchFunction(searchPhrase)
                     searchPerformed = true
+                    
+                    //saving
+                    controller.saveSearchHistoryRecord(with: searchPhrase)
+                    searchPhrase = ""
                 }
             } label: {
                 Text("Search")
                     .foregroundColor(.gray)
             }
             
-            if searchPerformed {
+            if searchPerformed || searchPhrase != ""{
                 Button {
                     withAnimation() {
+                        searchPhrase = ""
                         searchPerformed = false
                         closeFunction()
                     }
