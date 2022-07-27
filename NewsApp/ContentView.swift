@@ -26,7 +26,7 @@ struct ContentView: View {
                         
                         lastSearchPhrase = searchPhraseForSearch
                         //searching articles with search Phrase
-                       // await apicaller.fetchArticlesBySearchPhrase(searchPhrase: searchPhraseForSearch)
+                        await apicaller.fetchArticlesBySearchPhrase(searchPhrase: searchPhraseForSearch)
                     }
                 } closeFunction: {
                     Task { @MainActor in

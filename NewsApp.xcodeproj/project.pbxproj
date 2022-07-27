@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		241D6B242891A44D005C3C3F /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241D6B232891A44D005C3C3F /* CustomTypes.swift */; };
+		241D6B272891B134005C3C3F /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241D6B262891B134005C3C3F /* CustomTypes.swift */; };
 		245652DA2891353300825594 /* CountrySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245652D92891353300825594 /* CountrySettingsView.swift */; };
 		246F8C70288BFAAF00988C30 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246F8C6F288BFAAF00988C30 /* CustomViews.swift */; };
 		246F8C72288C003400988C30 /* ArticleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246F8C71288C003400988C30 /* ArticleViews.swift */; };
@@ -25,7 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		241D6B232891A44D005C3C3F /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
+		241D6B262891B134005C3C3F /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
 		245652D92891353300825594 /* CountrySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountrySettingsView.swift; sourceTree = "<group>"; };
 		246F8C6F288BFAAF00988C30 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		246F8C71288C003400988C30 /* ArticleViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViews.swift; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 				24897E4A288B039700E7064A /* NewsAppApp.swift */,
 				24897E4C288B039700E7064A /* ContentView.swift */,
 				246F8C6F288BFAAF00988C30 /* CustomViews.swift */,
-				241D6B232891A44D005C3C3F /* CustomTypes.swift */,
+				241D6B262891B134005C3C3F /* CustomTypes.swift */,
 				24897E58288B045700E7064A /* APICaller.swift */,
 				245652D92891353300825594 /* CountrySettingsView.swift */,
 				246F8C71288C003400988C30 /* ArticleViews.swift */,
@@ -186,7 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				241D6B242891A44D005C3C3F /* CustomTypes.swift in Sources */,
+				241D6B272891B134005C3C3F /* CustomTypes.swift in Sources */,
 				246F8C72288C003400988C30 /* ArticleViews.swift in Sources */,
 				24897E4D288B039700E7064A /* ContentView.swift in Sources */,
 				24776FE9288D9C0C00DAE1FB /* CategorySettingsViews.swift in Sources */,
