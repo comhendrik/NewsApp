@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct SearchHistoryView: View {
+    @Binding var searchPhrase: String
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Record.title, ascending: true)]) var records: FetchedResults<Record>
     @EnvironmentObject() var controller: PersistenceController
-    var searchFunction: (String) -> Void
     var body: some View {
         List {
             Text("Search History")
-            ForEach(records) { record in
+            ForEach(records.filter({"\($0.title ?? "unknown title")".contains(searchPhrase) || searchPhrase.isEmpty})) { record in
                 Button {
-                    searchFunction(record.title ?? "unknown title")
+                    searchPhrase = record.title ?? "unknown title"
                 } label: {
                     HStack {
                         Image(systemName: "arrow.up.right")

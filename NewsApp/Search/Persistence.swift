@@ -38,12 +38,24 @@ class PersistenceController: ObservableObject {
     }
     
     func saveSearchHistoryRecord(with term: String) {
+        //looks if record already exists
+        let allRecords = getAllRecords()
+        print(allRecords.count)
+        for record in allRecords {
+            if record.title == term {
+                //returns if a matching title is found to prevent creating unlimited records of same entry
+                return
+            }
+        }
+        
+        //if not create a new one
         let record = Record(context: container.viewContext)
         record.title = term
         saveContext()
     }
     
     func deleteItemsWithIndexSet(at offsets: IndexSet, items: FetchedResults<Record>) {
+        //delete specific item with .onDelete in List
         for index in offsets {
             let item = items[index]
             container.viewContext.delete(item)
@@ -52,9 +64,21 @@ class PersistenceController: ObservableObject {
         saveContext()
     }
     
+    
     func deleteItemWithObject(with record: Record) {
+        //delete specific item with button
         container.viewContext.delete(record)
         saveContext()
+    }
+    
+    func getAllRecords() -> [Record] {
+        //returns all Records as an array and not 
+        let allRecordsFetchRequest = NSFetchRequest<Record>(entityName: "Record")
+        do {
+            return try container.viewContext.fetch(allRecordsFetchRequest)
+        } catch {
+            return []
+        }
     }
     
     func saveContext() {

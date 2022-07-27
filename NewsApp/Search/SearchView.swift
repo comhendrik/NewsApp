@@ -22,6 +22,7 @@ struct SearchView: View {
             Button {
                 withAnimation() {
                     //performing search
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     searchFunction(searchPhrase)
                     searchPerformed = true
                     

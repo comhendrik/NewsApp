@@ -64,3 +64,27 @@ struct ArticleImageView: View {
         }
     }
 }
+
+struct HeaderView: View {
+    var headline: String
+    var subheadline: String
+    var body: some View {
+        VStack {
+            HStack {
+                Text(headline)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                Spacer()
+            }
+            .padding([.horizontal,.top])
+            HStack {
+                Text(subheadline)
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.gray.opacity(0.5))
+                Spacer()
+            }
+            .padding(.horizontal)
+        }
+    }
+}

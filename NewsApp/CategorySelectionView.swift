@@ -23,9 +23,9 @@ struct CategorySelectionView: View {
                                 withAnimation() {
                                     apicaller.currentCategory = category
                                 }
-                                
+                                print(apicaller.articles)
                                 if apicaller.articles[apicaller.currentCategory.arrayIndex].count == 0 {
-                                    apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue, country: apicaller.countryForFetching)
+                                    apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue)
                                 }
                             }
                         }

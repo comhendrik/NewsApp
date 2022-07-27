@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		245652DA2891353300825594 /* CountrySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245652D92891353300825594 /* CountrySettingsView.swift */; };
 		246F8C6E288BE74900988C30 /* ArticleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246F8C6D288BE74900988C30 /* ArticleList.swift */; };
 		246F8C70288BFAAF00988C30 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246F8C6F288BFAAF00988C30 /* CustomViews.swift */; };
 		246F8C72288C003400988C30 /* ArticleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246F8C71288C003400988C30 /* ArticleViews.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		245652D92891353300825594 /* CountrySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountrySettingsView.swift; sourceTree = "<group>"; };
 		246F8C6D288BE74900988C30 /* ArticleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleList.swift; sourceTree = "<group>"; };
 		246F8C6F288BFAAF00988C30 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		246F8C71288C003400988C30 /* ArticleViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViews.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				2483F1A3288FED3800EA259E /* Search */,
 				246F8C6D288BE74900988C30 /* ArticleList.swift */,
 				2483F19E288FE98400EA259E /* CategorySelectionView.swift */,
+				245652D92891353300825594 /* CountrySettingsView.swift */,
 				246F8C71288C003400988C30 /* ArticleViews.swift */,
 				24897E58288B045700E7064A /* APICaller.swift */,
 				24776FE8288D9C0C00DAE1FB /* CategoryViews.swift */,
@@ -187,6 +190,7 @@
 				2483F1A6288FED4F00EA259E /* Searchhistory.xcdatamodeld in Sources */,
 				24897E59288B045700E7064A /* APICaller.swift in Sources */,
 				24897E4B288B039700E7064A /* NewsAppApp.swift in Sources */,
+				245652DA2891353300825594 /* CountrySettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

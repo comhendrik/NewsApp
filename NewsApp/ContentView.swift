@@ -11,11 +11,14 @@ struct ContentView: View {
     @EnvironmentObject private var apicaller: APICaller
     let categorys: [Category] = [.general,.business,.entertainment,.health,.science,.sports,.technology]
     @AppStorage("categorys") var usedCategorys = CategoryArray()
+    @FocusState private var isFocused: Bool
     
     
     //TODO: add to CategorySelectionView
     @State private var showCategoryChangingView = false
     @State private var searchPhrase = ""
+    
+    
     @State private var lastSearch = ""
     @State private var searchPerformed = false
     @EnvironmentObject var controller: PersistenceController
@@ -36,26 +39,16 @@ struct ContentView: View {
                         //fetching new articles when closing search view when there are no articles
                         apicaller.currentCategory = .general
                         if apicaller.articles[apicaller.currentCategory.arrayIndex].count == 0 {
-                            apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue, country: apicaller.countryForFetching)
+                            apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue)
                         }
                     }
                 }
+                .focused($isFocused)
                 
                 
                 
-                if searchPhrase != "" {
-                    SearchHistoryView() { searchPhraseForSearch in
-                        Task { @MainActor in
-                            //fetching articles from search phrase
-                            apicaller.currentCategory = .search
-                            searchPerformed = true
-                            lastSearch = searchPhraseForSearch
-                            
-                            //searching articles with search phrase
-                           // await apicaller.fetchArticlesBySearchPhrase(searchPhrase: searchPhraseForSearch)
-                            searchPhrase = ""
-                        }
-                    }
+                if isFocused {
+                    SearchHistoryView(searchPhrase: $searchPhrase)
                 } else {
                     if apicaller.currentCategory == .search && searchPhrase == "" {
                         VStack {
@@ -105,6 +98,9 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .padding([.horizontal, .top])
+                })
+                ToolbarItem(placement: .navigationBarTrailing, content: {
+                    CountrySettingsView()
                 })
             }
             .fullScreenCover(isPresented: $showCategoryChangingView) {

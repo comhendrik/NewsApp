@@ -14,23 +14,8 @@ struct CategoryView: View {
     var body: some View {
         VStack {
             
-            
-            HStack {
-                Text("Add categorys to your site")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                Spacer()
-            }
-            .padding([.horizontal,.top])
-            HStack {
-                Text("General is always selected")
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.gray.opacity(0.5))
-                Spacer()
-            }
-            .padding(.horizontal)
-            
+            HeaderView(headline: "Add categorys to your site", subheadline: "General is always selected")
+
             
             LazyVGrid(columns: [GridItem(),GridItem()]) {
                 ForEach(categorys) { category in
@@ -42,10 +27,15 @@ struct CategoryView: View {
             Button {
                 showCategoryChangingView.toggle()
             } label: {
-                Text("Continue")
+                HStack {
+                    Spacer()
+                    Text("Continue")
+                    Spacer()
+                }
                     .foregroundColor(.white)
                     .padding()
-                    .background(Color.black.frame(width: UIScreen.main.bounds.width - UIScreen.main.bounds.width / 10).cornerRadius(20))
+                    .background(Color.black.cornerRadius(20))
+                    .padding(.horizontal)
                     
             }
 

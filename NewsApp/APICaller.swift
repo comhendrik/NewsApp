@@ -172,11 +172,78 @@ extension CategoryArray: RawRepresentable {
     }
 }
 
+enum Country: CaseIterable, Identifiable {
+    
+    case usa, germany, japan, france, uk
+    
+    
+    var countryCode: String {
+        switch self {
+        case .usa:
+            return "us"
+        case .germany:
+            return "de"
+        case .japan:
+            return "jp"
+        case .france:
+            return "fr"
+        case .uk:
+            return "gb"
+        }
+    }
+    
+    var stringValue: String {
+        switch self {
+        case .usa:
+            return "USA"
+        case .germany:
+            return "Germany"
+        case .japan:
+            return "Japan"
+        case .france:
+            return "France"
+        case .uk:
+            return "United Kingdom"
+        }
+    }
+    
+    var emojiValue: String {
+        switch self {
+        case .usa:
+            return "🇺🇸"
+        case .germany:
+            return "🇩🇪"
+        case .japan:
+            return "🇯🇵"
+        case .france:
+            return "🇫🇷"
+        case .uk:
+            return "🇬🇧"
+        }
+    }
+    
+    var id: Int {
+        switch self {
+        case .usa:
+            return 0
+        case .germany:
+            return 1
+        case .japan:
+            return 2
+        case .france:
+            return 3
+        case .uk:
+            return 4
+        }
+    }
+    
+    
+}
+
 class APICaller: ObservableObject {
     @Published var articles: [[Article]] = [[],[],[],[],[],[],[],[]]
     @Published var currentCategory: Category = .general
-    
-    let countryForFetching = "de"
+    @AppStorage("country") var countryInt = 0
     let apiKey = "key"
     
     @AppStorage("categorys") var usedCategorys = CategoryArray()
@@ -187,8 +254,9 @@ class APICaller: ObservableObject {
             if !usedCategorys.contains(.general) {
                 usedCategorys.append(.general)
             }
+            
             //fetch articles for first category automatically because otherwise there wouldn't be articles after launching the app
-            //articles[currentCategory.arrayIndex] = await fetchArticlesByCategory(category: currentCategory.queryValue, country: countryForFetching)
+            articles[currentCategory.arrayIndex] = await fetchArticlesByCategory(category: currentCategory.queryValue)
             
 //            //test objects because you don't want to query all the times while development thats because the real function above is not called
             for i in 0 ..< 10 {
@@ -201,15 +269,34 @@ class APICaller: ObservableObject {
     
     //TODO: Proper error handling for full function
     //API Call for articles
-    func fetchArticlesByCategory(category: String, country: String) async -> [Article] {
+    func fetchArticlesByCategory(category: String) async -> [Article] {
         
         var topHeadLinesUrl = URLComponents(string: "https://newsapi.org/v2/top-headlines?")
+        
+        //check country for query
+        
+        var countryForFetching: Country = .usa
+        
+        switch countryInt {
+        case 1:
+            countryForFetching = .germany
+        case 2:
+            countryForFetching = .japan
+        case 3:
+            countryForFetching = .france
+        case 4:
+            countryForFetching = .uk
+        default:
+            countryForFetching = .usa
+        }
         
         //create queryItems from passed values
         
         let category = URLQueryItem(name: "category", value: category)
-        let country = URLQueryItem(name: "country", value: country)
+        let country = URLQueryItem(name: "country", value: countryForFetching.countryCode)
         let key = URLQueryItem(name: "apiKey", value: apiKey)
+        
+        
         
         topHeadLinesUrl?.queryItems?.append(country)
         topHeadLinesUrl?.queryItems?.append(category)
