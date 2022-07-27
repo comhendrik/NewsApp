@@ -5,7 +5,29 @@
 //  Created by Hendrik Steen on 23.07.22.
 //
 
+//List with articles displayed in the ArticleOverviewView. The ArticleOverviewView directs to its corresponding ArticleDetailView
+
 import SwiftUI
+
+struct ArticleList: View {
+    
+    let articles: [Article]
+    
+    var body: some View {
+        List {
+            ForEach(articles) { article in
+                NavigationLink(destination: {
+                    ArticleDetailView(article: article)
+                }, label: {
+                    ArticleOverviewView(article: article)
+                })
+                .listRowSeparator(.hidden)
+            }
+            
+        }
+        .listStyle(.plain)
+    }
+}
 
 struct ArticleOverviewView: View {
     let article: Article
@@ -119,6 +141,8 @@ struct ArticleDetailView: View {
         }
     }
 }
+
+
 
 struct SizePreferenceKey: PreferenceKey {
     static var defaultValue: CGSize = .zero

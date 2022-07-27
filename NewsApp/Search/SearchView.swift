@@ -34,6 +34,7 @@ struct SearchView: View {
                 Text("Search")
                     .foregroundColor(.gray)
             }
+            .disabled(searchPhrase == "")
             
             if searchPerformed || searchPhrase != ""{
                 Button {

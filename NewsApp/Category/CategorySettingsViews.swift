@@ -5,45 +5,29 @@
 //  Created by Hendrik Steen on 24.07.22.
 //
 
+//this file provides the possibilty to add or delete categorys from the CategorySelectionMenu
+
 import SwiftUI
 
-struct CategoryView: View {
+struct CategoryAddSettingsView: View {
     let categorys: [Category]
     @Binding var showCategoryChangingView: Bool
     @AppStorage("categorys") var usedCategorys = CategoryArray()
     var body: some View {
-        VStack {
-            
-            HeaderView(headline: "Add categorys to your site", subheadline: "General is always selected")
-
-            
+        OverallSettingsView(headline: "Add categorys to your site", subheadline: "General is always selected", closeButtonTitle: "Continue") {
+            showCategoryChangingView.toggle()
+        } content: {
             LazyVGrid(columns: [GridItem(),GridItem()]) {
                 ForEach(categorys) { category in
-                    CategoryButton(category: category, usedCategorys: $usedCategorys)
+                    CategoryAddButton(category: category, usedCategorys: $usedCategorys)
                 }
             }
             .padding()
-            
-            Button {
-                showCategoryChangingView.toggle()
-            } label: {
-                HStack {
-                    Spacer()
-                    Text("Continue")
-                    Spacer()
-                }
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.black.cornerRadius(20))
-                    .padding(.horizontal)
-                    
-            }
-
         }
     }
 }
 
-struct CategoryButton: View {
+struct CategoryAddButton: View {
     let category: Category
     @Binding var usedCategorys: [Category]
     var body: some View {

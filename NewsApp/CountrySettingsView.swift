@@ -28,20 +28,24 @@ struct CountrySettingsView: View {
             }
         }
         .fullScreenCover(isPresented: $showSelection) {
-            CountrySelectionsView(countryInt: $countryInt, showSelection: $showSelection)
+            CountrySelectionView(countryInt: $countryInt, showSelection: $showSelection)
         }
 
     }
 }
 
-struct CountrySelectionsView: View {
+struct CountrySelectionView: View {
     @Binding var countryInt: Int
     @Binding var showSelection: Bool
     @EnvironmentObject private var apicaller: APICaller
     var body: some View {
-        VStack {
-            HeaderView(headline: "Select your country", subheadline: "We do our best to extend the number of countrys.")
-                .padding()
+        OverallSettingsView(headline: "Select your country", subheadline: "We do our best to extend the number of countrys.", closeButtonTitle: "Continue") {
+            Task { @MainActor in
+                apicaller.currentCategory = .general
+                apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue)
+                showSelection.toggle()
+            }
+        } content: {
             ScrollView(showsIndicators: false) {
                 ForEach(Country.allCases) { country in
                     Button {
@@ -61,27 +65,8 @@ struct CountrySelectionsView: View {
                     .padding(.horizontal)
                     .listRowSeparator(.hidden)
                 }
-                
-                Button {
-                    Task { @MainActor in
-                        apicaller.currentCategory = .general
-                        apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue)
-                        showSelection.toggle()
-                    }
-                } label: {
-                    HStack {
-                        Spacer()
-                        Text("Continue")
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
-                    .padding()
-                    .background(Color.black)
-                    .cornerRadius(20)
-                    
-                }
-                .padding(.horizontal)
             }
         }
+
     }
 }

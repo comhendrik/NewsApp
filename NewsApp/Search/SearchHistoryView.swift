@@ -11,9 +11,23 @@ struct SearchHistoryView: View {
     @Binding var searchPhrase: String
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Record.title, ascending: true)]) var records: FetchedResults<Record>
     @EnvironmentObject() var controller: PersistenceController
+    @State private var refreshingID = UUID()
     var body: some View {
         List {
-            Text("Search History")
+            HStack {
+                Text("Search History")
+                Spacer()
+                Button {
+                    print("hello")
+                    controller.deleteAllRecords()
+                    self.refreshingID = UUID()
+                } label: {
+                    Image(systemName: "trash")
+                        .foregroundColor(.black)
+                }
+                .disabled(records.isEmpty)
+
+            }
             ForEach(records.filter({"\($0.title ?? "unknown title")".contains(searchPhrase) || searchPhrase.isEmpty})) { record in
                 Button {
                     searchPhrase = record.title ?? "unknown title"
@@ -34,9 +48,9 @@ struct SearchHistoryView: View {
                 }
 
             }
-            .onDelete { indexSet in
-                controller.deleteItemsWithIndexSet(at: indexSet, items: records)
-            }
+            .id(refreshingID)
+            
+            
         }
         .listStyle(.plain)
     }

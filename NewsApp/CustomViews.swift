@@ -20,7 +20,7 @@ struct CustomDivider: View {
     }
 }
 
-//TODO: Do not repeat .frame, .cornerRadius, etc.
+//TODO: Do not repeat .frame, .cornerRadius, etc. and look for "Invalid frame dimension (negative or non-finite)." warning
 struct ArticleImageView: View {
     var url: String
     var divideScreenWidthBy: CGFloat = 0
@@ -85,6 +85,36 @@ struct HeaderView: View {
                 Spacer()
             }
             .padding(.horizontal)
+        }
+    }
+}
+
+
+struct OverallSettingsView<T:View>: View {
+    //TODO: add support for other colors in HeaderView and Button
+    var headline: String
+    var subheadline: String
+    var closeButtonTitle: String
+    var closeAction: () -> Void
+    @ViewBuilder var content: T
+    var body: some View {
+        VStack {
+            HeaderView(headline: headline, subheadline: subheadline)
+            content
+            Button {
+                closeAction()
+            } label: {
+                HStack {
+                    Spacer()
+                    Text(closeButtonTitle)
+                    Spacer()
+                }
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.black.cornerRadius(20))
+                    .padding(.horizontal)
+                    
+            }
         }
     }
 }

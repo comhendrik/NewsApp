@@ -5,25 +5,26 @@
 //  Created by Hendrik Steen on 26.07.22.
 //
 
+//this file provides the possibilty to change the given category for reading articles with a nice menu
+
 import SwiftUI
 
-struct CategorySelectionView: View {
+struct CategorySelectionMenu: View {
     @EnvironmentObject private var apicaller: APICaller
     let categorys: [Category]
-    @Binding var showCategoryChangingView: Bool
+    @State private var showCategoryChangingView = false
     let usedCategorys: [Category]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(categorys) { category in
                     if usedCategorys.contains(category) {
-                        MenuCategoryButton(currentCategory: apicaller.currentCategory, category: category) {
+                        CategoryMenuButton(currentCategory: apicaller.currentCategory, category: category) {
                             //changing category and fetching articles when there are no articles for this category
                             Task { @MainActor in
                                 withAnimation() {
                                     apicaller.currentCategory = category
                                 }
-                                print(apicaller.articles)
                                 if apicaller.articles[apicaller.currentCategory.arrayIndex].count == 0 {
                                     apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue)
                                 }
@@ -33,6 +34,7 @@ struct CategorySelectionView: View {
                 }
                 
                 Button(action: {
+                    apicaller.currentCategory = .general
                     showCategoryChangingView.toggle()
                 }, label: {
                     Image(systemName: "plus")
@@ -41,10 +43,13 @@ struct CategorySelectionView: View {
             }
         }
         .padding(.horizontal)
+        .fullScreenCover(isPresented: $showCategoryChangingView) {
+            CategoryAddSettingsView(categorys: categorys, showCategoryChangingView: $showCategoryChangingView)
+        }
     }
 }
 
-struct MenuCategoryButton: View {
+struct CategoryMenuButton: View {
     var currentCategory: Category
     var category: Category
     let action: () -> Void

@@ -12,14 +12,8 @@ struct ContentView: View {
     let categorys: [Category] = [.general,.business,.entertainment,.health,.science,.sports,.technology]
     @AppStorage("categorys") var usedCategorys = CategoryArray()
     @FocusState private var isFocused: Bool
-    
-    
-    //TODO: add to CategorySelectionView
-    @State private var showCategoryChangingView = false
     @State private var searchPhrase = ""
-    
-    
-    @State private var lastSearch = ""
+    @State private var lastSearchPhrase = ""
     @State private var searchPerformed = false
     @EnvironmentObject var controller: PersistenceController
     var body: some View {
@@ -30,7 +24,7 @@ struct ContentView: View {
                         //fetching articles from search phrase
                         apicaller.currentCategory = .search
                         
-                        lastSearch = searchPhraseForSearch
+                        lastSearchPhrase = searchPhraseForSearch
                         //searching articles with search Phrase
                        // await apicaller.fetchArticlesBySearchPhrase(searchPhrase: searchPhraseForSearch)
                     }
@@ -46,7 +40,7 @@ struct ContentView: View {
                 .focused($isFocused)
                 
                 
-                
+                //show SearchHistoryView when users clicks on text field of SearchView
                 if isFocused {
                     SearchHistoryView(searchPhrase: $searchPhrase)
                 } else {
@@ -56,9 +50,9 @@ struct ContentView: View {
                                 Text("\(apicaller.currentCategory.emojiValue) \(apicaller.currentCategory.stringValue) Results for")
                                     .fontWeight(.bold)
                                 Button {
-                                    searchPhrase = lastSearch
+                                    searchPhrase = lastSearchPhrase
                                 } label: {
-                                    Text(lastSearch)
+                                    Text(lastSearchPhrase)
                                 }
 
                                 Spacer()
@@ -67,8 +61,9 @@ struct ContentView: View {
                             
                         }
                     } else {
-                        CategorySelectionView(categorys: categorys, showCategoryChangingView: $showCategoryChangingView, usedCategorys: usedCategorys)
+                        CategorySelectionMenu(categorys: categorys, usedCategorys: usedCategorys)
                     }
+                    
                     //TODO: do not repeat code
                     switch apicaller.currentCategory {
                     case .search:
@@ -103,9 +98,7 @@ struct ContentView: View {
                     CountrySettingsView()
                 })
             }
-            .fullScreenCover(isPresented: $showCategoryChangingView) {
-                CategoryView(categorys: categorys, showCategoryChangingView: $showCategoryChangingView)
-            }
+            
         }
     }
 }

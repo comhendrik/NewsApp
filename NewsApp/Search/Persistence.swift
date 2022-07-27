@@ -40,7 +40,7 @@ class PersistenceController: ObservableObject {
     func saveSearchHistoryRecord(with term: String) {
         //looks if record already exists
         let allRecords = getAllRecords()
-        print(allRecords.count)
+        
         for record in allRecords {
             if record.title == term {
                 //returns if a matching title is found to prevent creating unlimited records of same entry
@@ -69,6 +69,21 @@ class PersistenceController: ObservableObject {
         //delete specific item with button
         container.viewContext.delete(record)
         saveContext()
+    }
+    
+    func deleteAllRecords() {
+        //deletes all records without loading into memory
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Record")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+        do {
+            try container.viewContext.execute(deleteRequest)
+            //reset to reload view when needed
+            container.viewContext.reset()
+        } catch let error as NSError {
+            // TODO: handle the error
+            print(error.localizedDescription)
+        }
     }
     
     func getAllRecords() -> [Record] {
