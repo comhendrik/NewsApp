@@ -34,7 +34,7 @@ struct CategorySelectionMenu: View {
                     showCategoryChangingView.toggle()
                 }, label: {
                     Image(systemName: "plus")
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("black"))
                 })
             }
         }
@@ -55,12 +55,12 @@ struct CategoryMenuButton: View {
                 action()
             } label: {
                 Text("\(category.emojiValue) \(category.stringValue)")
-                    .foregroundColor(currentCategory == category ? .black : .gray)
+                    .foregroundColor(currentCategory == category ? Color("black") : .gray)
                     .fontWeight(currentCategory == category ? .heavy : .light)
             }
             .padding(.horizontal, currentCategory == category ? 10 : 5)
             if currentCategory == category {
-                CustomDivider(color: .black, width: 3, cornerRadius: 15)
+                CustomDivider(color: Color("black"), width: 3, cornerRadius: 15)
             }
         }
     }

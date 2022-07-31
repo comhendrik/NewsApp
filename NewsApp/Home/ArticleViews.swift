@@ -39,7 +39,7 @@ struct ArticleOverviewView: View {
             }
             
             Text(article.title ?? "no title")
-                .foregroundColor(.black)
+                .foregroundColor(Color("black"))
         }
     }
 }
@@ -70,7 +70,7 @@ struct ArticleDetailView: View {
                         HStack {
                             Text(article.title ?? "No title")
                                 .fontWeight(.bold)
-                                .foregroundColor(.black)
+                                .foregroundColor(Color("black"))
                                 .fixedSize(horizontal: false, vertical: true)
                             Spacer()
                         }
@@ -89,8 +89,8 @@ struct ArticleDetailView: View {
                     HStack {
                         Text(article.author ?? "no author")
                             .padding(15)
-                            .foregroundColor(.white)
-                            .background(Color.black.cornerRadius(25))
+                            .foregroundColor(Color("white"))
+                            .background(Color("black").cornerRadius(25))
                         Spacer()
                         Text(createDateFromString(dateStr: article.publishedAt ?? "no date") ?? Date(), style: .date)
                             .padding(15)
@@ -111,7 +111,7 @@ struct ArticleDetailView: View {
                     
                         
                 }
-                .background(Color.white.frame(width: UIScreen.main.bounds.width).cornerRadius(20))
+                .background(Color("white").frame(width: UIScreen.main.bounds.width).cornerRadius(20))
             }
             .offset(y: -heightOfImage/8)
             
@@ -127,7 +127,7 @@ struct ArticleDetailView: View {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Image(systemName: "chevron.backward.circle.fill")
-                        .foregroundColor(.white)
+                        .foregroundColor(Color("white"))
                         .font(.title2)
                 })
             })
@@ -135,7 +135,7 @@ struct ArticleDetailView: View {
                 HStack {
                     Link(destination: URL(string: article.id ?? "no url") ?? URL(string: "https://google.com")!, label: {
                         Image(systemName: "doc.text.magnifyingglass")
-                            .foregroundColor(.white)
+                            .foregroundColor(Color("white"))
                             .font(.title2)
                     })
                     ShareSheet(article: article)

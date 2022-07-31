@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		241D6B272891B134005C3C3F /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241D6B262891B134005C3C3F /* CustomTypes.swift */; };
 		245652DA2891353300825594 /* CountrySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245652D92891353300825594 /* CountrySettingsView.swift */; };
-		24577836289682DD0060232E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24577835289682DD0060232E /* HomeView.swift */; };
 		2457783828968C9D0060232E /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2457783728968C9D0060232E /* ShareSheet.swift */; };
 		246F8C70288BFAAF00988C30 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246F8C6F288BFAAF00988C30 /* CustomViews.swift */; };
 		246F8C72288C003400988C30 /* ArticleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246F8C71288C003400988C30 /* ArticleViews.swift */; };
@@ -24,12 +23,12 @@
 		24897E4F288B039C00E7064A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24897E4E288B039C00E7064A /* Assets.xcassets */; };
 		24897E52288B039C00E7064A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24897E51288B039C00E7064A /* Preview Assets.xcassets */; };
 		24897E59288B045700E7064A /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24897E58288B045700E7064A /* APICaller.swift */; };
+		24D03F6328971637008D5060 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24D03F6228971637008D5060 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		241D6B262891B134005C3C3F /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
 		245652D92891353300825594 /* CountrySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountrySettingsView.swift; sourceTree = "<group>"; };
-		24577835289682DD0060232E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		2457783728968C9D0060232E /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		246F8C6F288BFAAF00988C30 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		246F8C71288C003400988C30 /* ArticleViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViews.swift; sourceTree = "<group>"; };
@@ -45,6 +44,7 @@
 		24897E4E288B039C00E7064A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		24897E51288B039C00E7064A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		24897E58288B045700E7064A /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
+		24D03F6228971637008D5060 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 				245652D92891353300825594 /* CountrySettingsView.swift */,
 				246F8C71288C003400988C30 /* ArticleViews.swift */,
 				2457783728968C9D0060232E /* ShareSheet.swift */,
-				24577835289682DD0060232E /* HomeView.swift */,
+				24D03F6228971637008D5060 /* HomeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -202,8 +202,8 @@
 			files = (
 				241D6B272891B134005C3C3F /* CustomTypes.swift in Sources */,
 				2457783828968C9D0060232E /* ShareSheet.swift in Sources */,
-				24577836289682DD0060232E /* HomeView.swift in Sources */,
 				246F8C72288C003400988C30 /* ArticleViews.swift in Sources */,
+				24D03F6328971637008D5060 /* HomeView.swift in Sources */,
 				24897E4D288B039700E7064A /* ContentView.swift in Sources */,
 				24776FE9288D9C0C00DAE1FB /* CategorySettingsViews.swift in Sources */,
 				2483F19F288FE98400EA259E /* CategorySelectionView.swift in Sources */,

@@ -22,7 +22,7 @@ struct SearchHistoryView: View {
                     self.refreshingID = UUID()
                 } label: {
                     Image(systemName: "trash")
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("black"))
                 }
                 .disabled(records.isEmpty)
 

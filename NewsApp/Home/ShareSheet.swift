@@ -32,7 +32,7 @@ struct ShareSheet: View {
             self.showingSheet = true
         }) {
             Image(systemName: "square.and.arrow.up")
-                .foregroundColor(.white)
+                .foregroundColor(Color("white"))
         }
         .sheet(isPresented: $showingSheet,
                content: {

@@ -52,11 +52,11 @@ struct CountrySelectionView: View {
                     } label: {
                         HStack {
                             Text("\(country.emojiValue) \(country.stringValue)")
-                            .foregroundColor(country.id == countryInt ? .white : .black)
+                            .foregroundColor(country.id == countryInt ? Color("white") : Color("black"))
                             Spacer()
                         }
                         .padding()
-                        .background(country.id == countryInt ? Color.black : Color.clear)
+                        .background(country.id == countryInt ? Color("black") : Color.clear)
                         .cornerRadius(20)
                         
                     }

@@ -20,7 +20,7 @@ struct CustomDivider: View {
     }
 }
 
-//TODO: Do not repeat .frame, .cornerRadius, etc. and look for "Invalid frame dimension (negative or non-finite)." warning
+//TODO: Do not repeat .frame, .cornerRadius
 struct ArticleImageView: View {
     var url: String
     var divideScreenWidthBy: CGFloat = 0
@@ -54,7 +54,7 @@ struct ArticleImageView: View {
             default:
                 ZStack {
                     Rectangle()
-                        .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy, height: UIScreen.main.bounds.height / divideScreenHeightBy)
+                        .frame(width: abs(UIScreen.main.bounds.width / divideScreenWidthBy), height: abs(UIScreen.main.bounds.height / divideScreenHeightBy))
                         .cornerRadius(cornerRadius)
                         .foregroundColor(.gray.opacity(0.75))
                     Image(systemName: "photo.on.rectangle.angled")
@@ -109,9 +109,9 @@ struct OverallSettingsView<T:View>: View {
                     Text(closeButtonTitle)
                     Spacer()
                 }
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("white"))
                     .padding()
-                    .background(Color.black.cornerRadius(20))
+                    .background(Color("black").cornerRadius(20))
                     .padding(.horizontal)
                     
             }

@@ -45,13 +45,13 @@ struct CategoryAddButton: View {
         } label: {
             ZStack {
                 Circle()
-                    .strokeBorder(usedCategorys.contains(category) ? Color.black.opacity(0.75) : Color.gray.opacity(0.25), lineWidth: 2)
-                    .background(Circle().foregroundColor(usedCategorys.contains(category) ? Color.gray.opacity(0.25): Color.white))
+                    .strokeBorder(usedCategorys.contains(category) ? Color("black").opacity(0.75) : Color.gray.opacity(0.25), lineWidth: 2)
+                    .background(Circle().foregroundColor(usedCategorys.contains(category) ? Color.gray.opacity(0.25): Color("white")))
                     .frame(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.width / 3)
                 VStack {
                     Text(category.emojiValue)
                     Text(category.stringValue)
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("black"))
                         .font(.callout)
                 }
             
