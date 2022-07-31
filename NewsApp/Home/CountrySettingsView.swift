@@ -40,11 +40,9 @@ struct CountrySelectionView: View {
     @EnvironmentObject private var apicaller: APICaller
     var body: some View {
         OverallSettingsView(headline: "Select your country", subheadline: "We do our best to extend the number of countrys.", closeButtonTitle: "Continue") {
-            Task { @MainActor in
-                apicaller.currentCategory = .general
-                apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue)
-                showSelection.toggle()
-            }
+            apicaller.currentCategory = .general
+            apicaller.fetchArticlesByCategory()
+            showSelection.toggle()
         } content: {
             ScrollView(showsIndicators: false) {
                 ForEach(Country.allCases) { country in

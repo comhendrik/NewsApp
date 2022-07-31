@@ -21,14 +21,10 @@ struct CategorySelectionMenu: View {
                     if usedCategorys.contains(category) {
                         CategoryMenuButton(currentCategory: apicaller.currentCategory, category: category) {
                             //changing category and fetching articles when there are no articles for this category
-                            Task { @MainActor in
-                                withAnimation() {
-                                    apicaller.currentCategory = category
-                                }
-                                if apicaller.articles[apicaller.currentCategory.arrayIndex].count == 0 {
-                                    apicaller.articles[apicaller.currentCategory.arrayIndex] = await apicaller.fetchArticlesByCategory(category: apicaller.currentCategory.queryValue)
-                                }
+                            withAnimation() {
+                                apicaller.currentCategory = category
                             }
+                            apicaller.fetchArticlesByCategory()
                         }
                     }
                 }

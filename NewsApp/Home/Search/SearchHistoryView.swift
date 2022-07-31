@@ -18,7 +18,6 @@ struct SearchHistoryView: View {
                 Text("Search History")
                 Spacer()
                 Button {
-                    print("hello")
                     controller.deleteAllRecords()
                     self.refreshingID = UUID()
                 } label: {

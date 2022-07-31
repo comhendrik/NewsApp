@@ -16,113 +16,118 @@ class APICaller: ObservableObject {
     @Published var articles: [[Article]] = [[],[],[],[],[],[],[],[]]
     @Published var currentCategory: Category = .general
     @AppStorage("country") var countryInt = 0
-    let apiKey = "YOURAPIKEY"
+    let apiKey = "key"
     
     @AppStorage("categorys") var usedCategorys = CategoryArray()
     
     init() {
-        Task { @MainActor in
-            
-            if !usedCategorys.contains(.general) {
-                usedCategorys.append(.general)
-            }
-            
-            //fetch articles for first category automatically because otherwise there wouldn't be articles after launching the app
-            articles[currentCategory.arrayIndex] = await fetchArticlesByCategory(category: currentCategory.queryValue)
-            
+        if !usedCategorys.contains(.general) {
+            usedCategorys.append(.general)
+        }
+        
+        //fetch articles for first category automatically because otherwise there wouldn't be articles after launching the app
+        fetchArticlesByCategory()
+        
 //           //test objects because you don't want to query all the times while development thats because the real function above is not called
 //            for i in 0 ..< 10 {
 //                fetchArticlesForTesting(index: i)
 //            }
-            
-        }
+        
     }
     
     
     //TODO: Proper error handling for full function
     //API Call for articles
-    func fetchArticlesByCategory(category: String) async -> [Article] {
+    func fetchArticlesByCategory() {
         
-        var topHeadLinesUrl = URLComponents(string: "https://newsapi.org/v2/top-headlines?")
-        
-        //check country for query
-        
-        var countryForFetching: Country = .usa
-        
-        switch countryInt {
-        case 1:
-            countryForFetching = .germany
-        case 2:
-            countryForFetching = .japan
-        case 3:
-            countryForFetching = .france
-        case 4:
-            countryForFetching = .uk
-        default:
-            countryForFetching = .usa
-        }
-        
-        //create queryItems from passed values
-        
-        let category = URLQueryItem(name: "category", value: category)
-        let country = URLQueryItem(name: "country", value: countryForFetching.countryCode)
-        let key = URLQueryItem(name: "apiKey", value: apiKey)
-        
-        
-        
-        topHeadLinesUrl?.queryItems?.append(country)
-        topHeadLinesUrl?.queryItems?.append(category)
-        topHeadLinesUrl?.queryItems?.append(key)
-        
-        
-        //check if url is valid
-        guard let urlForFetching = topHeadLinesUrl?.url else {
-            print("guard error")
-            return []
-        }
+        Task { @MainActor in
+            if articles[currentCategory.arrayIndex].count > 0 {
+                return
+            }
+            var topHeadLinesUrl = URLComponents(string: "https://newsapi.org/v2/top-headlines?")
+            
+            //check country for query
+            
+            var countryForFetching: Country = .usa
+            
+            switch countryInt {
+            case 1:
+                countryForFetching = .germany
+            case 2:
+                countryForFetching = .japan
+            case 3:
+                countryForFetching = .france
+            case 4:
+                countryForFetching = .uk
+            default:
+                countryForFetching = .usa
+            }
+            
+            //create queryItems from passed values
+            
+            let category = URLQueryItem(name: "category", value: currentCategory.queryValue)
+            let country = URLQueryItem(name: "country", value: countryForFetching.countryCode)
+            let key = URLQueryItem(name: "apiKey", value: apiKey)
+            
+            
+            
+            topHeadLinesUrl?.queryItems?.append(country)
+            topHeadLinesUrl?.queryItems?.append(category)
+            topHeadLinesUrl?.queryItems?.append(key)
+            
+            
+            //check if url is valid
+            guard let urlForFetching = topHeadLinesUrl?.url else {
+                print("guard error")
+                return
+            }
 
-        //get data from api
-        do {
-            let (data, _) = try await URLSession.shared.data(from: urlForFetching)
-            let decoder = JSONDecoder()
-            let decodedData = try decoder.decode(APIResponse.self, from: data)
-            return decodedData.articles
-        } catch {
-            print(error)
-            return []
+            //get data from api
+            do {
+                let (data, _) = try await URLSession.shared.data(from: urlForFetching)
+                let decoder = JSONDecoder()
+                let decodedData = try decoder.decode(APIResponse.self, from: data)
+                articles[currentCategory.arrayIndex] = decodedData.articles
+                return
+            } catch {
+                print(error)
+                return
+            }
         }
         
     }
     
-    func fetchArticlesBySearchPhrase(searchPhrase: String) async {
-        var topHeadLinesUrl = URLComponents(string: "https://newsapi.org/v2/everything?")
-        
-        //create queryItems from passed values
-        
-        let category = URLQueryItem(name: "q", value: searchPhrase)
-        let key = URLQueryItem(name: "apiKey", value: apiKey)
-        
-        topHeadLinesUrl?.queryItems?.append(category)
-        topHeadLinesUrl?.queryItems?.append(key)
-        
-        
-        //check if url is valid
-        guard let urlForFetching = topHeadLinesUrl?.url else {
-            print("error")
-            return
-        }
-        print(urlForFetching)
-
-        //get data from api
-        do {
-            let (data, _) = try await URLSession.shared.data(from: urlForFetching)
-            let decoder = JSONDecoder()
-            let decodedData = try decoder.decode(APIResponse.self, from: data)
-            Task { @MainActor in
-                articles[0] = decodedData.articles
+    func fetchArticlesBySearchPhrase(searchPhrase: String) {
+        Task { @MainActor in
+            
+            currentCategory = .search
+            
+            var topHeadLinesUrl = URLComponents(string: "https://newsapi.org/v2/everything?")
+            
+            //create queryItems from passed values
+            
+            let category = URLQueryItem(name: "q", value: searchPhrase)
+            let key = URLQueryItem(name: "apiKey", value: apiKey)
+            
+            topHeadLinesUrl?.queryItems?.append(category)
+            topHeadLinesUrl?.queryItems?.append(key)
+            
+            
+            //check if url is valid
+            guard let urlForFetching = topHeadLinesUrl?.url else {
+                print("error")
+                return
             }
-        } catch {
-            print(error)
+            
+            //get data from api
+            do {
+                let (data, _) = try await URLSession.shared.data(from: urlForFetching)
+                let decoder = JSONDecoder()
+                let decodedData = try decoder.decode(APIResponse.self, from: data)
+                articles[0] = decodedData.articles
+            } catch {
+                print(error)
+            }
         }
     }
     
