@@ -8,4 +8,4 @@ Download:<br>
 
 Todo:
 1. More Information in Readme
-2. Possibilty to follow sources
+2. Dark mode
