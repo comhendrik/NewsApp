@@ -132,11 +132,14 @@ struct ArticleDetailView: View {
                 })
             })
             ToolbarItem(placement: .navigationBarTrailing, content: {
-                Link(destination: URL(string: article.id ?? "no url") ?? URL(string: "https://google.com")!, label: {
-                    Image(systemName: "doc.text.magnifyingglass")
-                        .foregroundColor(.white)
-                        .font(.title2)
-                })
+                HStack {
+                    Link(destination: URL(string: article.id ?? "no url") ?? URL(string: "https://google.com")!, label: {
+                        Image(systemName: "doc.text.magnifyingglass")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                    })
+                    ShareSheet(article: article)
+                }
             })
         }
     }
