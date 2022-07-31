@@ -32,7 +32,7 @@ struct ArticleImageView: View {
             case .empty:
                 ZStack {
                     Rectangle()
-                        .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy, height: UIScreen.main.bounds.height / divideScreenHeightBy)
+                        .frame(width: abs(UIScreen.main.bounds.width / divideScreenWidthBy), height: abs(UIScreen.main.bounds.height / divideScreenHeightBy))
                         .cornerRadius(cornerRadius)
                         .foregroundColor(.gray.opacity(0.75))
                     ProgressView()
@@ -40,12 +40,12 @@ struct ArticleImageView: View {
             case .success(let image):
                 image.resizable()
                      .aspectRatio(contentMode: .fit)
-                     .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy)
+                     .frame(width: abs(UIScreen.main.bounds.width / divideScreenWidthBy))
                      .cornerRadius(cornerRadius)
             case .failure:
                     ZStack {
                         Rectangle()
-                            .frame(width: UIScreen.main.bounds.width / divideScreenWidthBy, height: UIScreen.main.bounds.height / divideScreenHeightBy)
+                            .frame(width: abs(UIScreen.main.bounds.width / divideScreenWidthBy), height: abs(UIScreen.main.bounds.height / divideScreenHeightBy))
                             .cornerRadius(cornerRadius)
                             .foregroundColor(.gray.opacity(0.75))
                         Image(systemName: "photo.on.rectangle.angled")

@@ -26,12 +26,12 @@ class APICaller: ObservableObject {
         }
         
         //fetch articles for first category automatically because otherwise there wouldn't be articles after launching the app
-        fetchArticlesByCategory()
+        //fetchArticlesByCategory()
         
-//           //test objects because you don't want to query all the times while development thats because the real function above is not called
-//            for i in 0 ..< 10 {
-//                fetchArticlesForTesting(index: i)
-//            }
+           //test objects because you don't want to query all the times while development thats because the real function above is not called
+            for i in 0 ..< 10 {
+                fetchArticlesForTesting(index: i)
+            }
         
     }
     
